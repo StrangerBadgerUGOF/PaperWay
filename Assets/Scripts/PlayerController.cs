@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Boolean variables for rotate unlocking
         _rotateUnlock = true;
         _rotateUnlocking = false;
     }
@@ -66,14 +67,14 @@ public class PlayerController : MonoBehaviour
         UpdatePosition();
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        _playerForwardSpeed += Mathf.Abs(_playerRigidbody.velocity.normalized.magnitude);
+    }
+
     private void OnCollisionStay(Collision collision)
     {
         _playerForwardSpeed = _playerRigidbody.velocity.magnitude;
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        _playerForwardSpeed +=  _playerRigidbody.mass;
     }
 
     #endregion
@@ -112,7 +113,9 @@ public class PlayerController : MonoBehaviour
     void UpdatePosition()
     {
         // Calculating speed
-        _playerForwardSpeed -= transform.forward.y * (transform.forward.y <= 0 ? DIVE_SPEED : RISE_SPEED) * _playerRigidbody.mass * Time.deltaTime;
+        _playerForwardSpeed -= transform.forward.y * 
+            (transform.forward.y <= 0 ? DIVE_SPEED : RISE_SPEED)
+            * _playerRigidbody.mass * Time.deltaTime;
         if (_playerForwardSpeed < PLAYER_MIN_SPEED) { _playerForwardSpeed = PLAYER_MIN_SPEED; }
         if (_playerForwardSpeed > _playerMaxSpeed) { _playerForwardSpeed = _playerMaxSpeed; }
         // Adding force
