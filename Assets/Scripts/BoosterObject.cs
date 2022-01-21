@@ -11,7 +11,9 @@ public class BoosterObject : MonoBehaviour
         if (other.tag == "Player")
         {
             other.attachedRigidbody.AddForce
-                (transform.up * _pushForce, ForceMode.Force);
+                (transform.up * _pushForce /
+                Vector3.Distance(transform.position.normalized, 
+                other.transform.position.normalized) , ForceMode.Force);
             // Rotate object according to the up force
             Quaternion lookUp = Quaternion.LookRotation(transform.up);
             other.transform.rotation = Quaternion.Slerp(other.transform.rotation, lookUp, Time.deltaTime);
