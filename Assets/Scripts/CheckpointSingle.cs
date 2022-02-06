@@ -21,7 +21,7 @@ public class CheckpointSingle : MonoBehaviour
     private CheckpointWaypoint _checkpointWaypoint;
 
     // Event, which signals passing of the checkpoint
-    public event Action<GameObject, int> CheckpointWasPassed;
+    public event Action<GameObject, int> CheckpointWasPassedEvent;
 
     private void Start()
     {
@@ -55,6 +55,6 @@ public class CheckpointSingle : MonoBehaviour
         // Set active state of object to false
         gameObject.SetActive(false);
         // Trigger event
-        CheckpointWasPassed?.Invoke(gameObject, _addTime);
+        CheckpointWasPassedEvent?.Invoke(gameObject, _addTime);
     }
 }

@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 // Control type of the player
 public enum ControlType
@@ -10,7 +10,13 @@ public enum ControlType
 
 public class PlayerController : MonoBehaviour
 {
+    // Event for runned out time
+    public event Action PlayerHasCrashed;
+
     #region Variables
+
+    // Boolean variable determines, if plane can fly
+    private bool _canFly;
 
     // Player speed limits 
     [SerializeField]
@@ -71,33 +77,32 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Define fly ability to true
+        _canFly = true;
+        // Determine control type
         PlayerControlType = _playerControlType;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Player input
-        PlayerInput();
-        // Check special keys
-        if (Input.GetKeyDown(KeyCode.R))
+        if (_canFly == true)
         {
-            // Reload scene
-            Scene scene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(scene.name);
-        }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            // Exit to menu
-            SceneManager.LoadScene(MenuManager.MENU_SCENE);
+            // Get player input
+            PlayerInput();
         }
     }
 
     private void FixedUpdate()
     {
-        UpdatePosition();
+        if (_canFly == true)
+        {
+            // Update plane position
+            UpdatePosition();
+        }
     }
 
+    // Trigger is place, where plane will get boost
     private void OnTriggerStay(Collider other)
     {
         _playerForwardSpeed += Mathf.Abs(_playerRigidbody.velocity.normalized.magnitude);
@@ -105,7 +110,12 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
+        // Set flying ability to false
+        _canFly = false;
+        // Update player recent speed
         _playerForwardSpeed = _playerRigidbody.velocity.magnitude;
+        // Invoke crash event
+        PlayerHasCrashed?.Invoke();
     }
 
     #endregion

@@ -44,7 +44,7 @@ public class CheckpointManager : MonoBehaviour
         // Subscribe to all checkpoints
         for (int i = 0; i < _checkpointSinglesList.Count; i++)
         {
-            _checkpointSinglesList[i].CheckpointWasPassed += CheckpointPassed;
+            _checkpointSinglesList[i].CheckpointWasPassedEvent += CheckpointPassed;
             _checkpointSinglesList[i].gameObject.SetActive(false);
         }
         // Generate random waypoint

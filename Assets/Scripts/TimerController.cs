@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,9 @@ using UnityEngine.UI;
 // Timer controller
 public class TimerController : MonoBehaviour
 {
+    // Event for runned out time
+    public event Action TimeRunnedOutEvent;
+
     // Passed time text
     [SerializeField]
     private Text _totalPassedTimeText;
@@ -40,8 +44,14 @@ public class TimerController : MonoBehaviour
         // Update time counter
         _timeCounter -= Time.deltaTime;
         _timerText.text = Mathf.Round(_timeCounter).ToString();
-        // Don't allow timer show negative numbers
-        if (_timeCounter < 0) { _timeCounter = 0; }
+        // Call event, if we have reached zero or below
+        if (_timeCounter <= 0) 
+        {
+            // Stop timer
+            IsCounting = false;
+            _timeCounter = 0; 
+            TimeRunnedOutEvent?.Invoke();
+        }
     }
 
     // Adds time to the timer
