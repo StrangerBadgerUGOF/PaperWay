@@ -60,9 +60,9 @@ public class GameManager : MonoBehaviour
         {
             _playerNameText.text = DEFAULT_NAME;
         }
-        // TEST
-        Debug.Log(_playerNameText.text);
-        // SAVE DATA
+        TimeRes timeRes = new TimeRes() { _seconds = _timerController.TotalPassedTime };
+        HighscoreTable.AddHighscoreEntry(new HighscoreEntry() { score = _checkpointManager.PassedCheckpoints,
+           time = timeRes, name = _playerNameText.text });
     }
 
     // Reloads scene and saves player data

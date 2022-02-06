@@ -28,6 +28,9 @@ public class CheckpointManager : MonoBehaviour
     // Total time, which will be added to the timer
     private int _totalTimeIncrease;
 
+    // Passed checkpoints
+    public int PassedCheckpoints { get { return _allPassedCheckpointsCount; } }
+
     // Start is called before the first frame update
     private void Awake()
     {

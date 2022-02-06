@@ -21,8 +21,11 @@ public class TimerController : MonoBehaviour
     // Timer text
     [SerializeField]
     private Text _timerText;
+
     // Boolean variable for timer control
     public bool IsCounting { get; set; }
+    // Time counter
+    public float TotalPassedTime { get { return _totalPassedTime; } }
 
     // Start is called before the first frame update
     void Start()
